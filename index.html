@@ -23,6 +23,8 @@
         1: 'Why A.I. ethics? Why now?',
         2: 'Let’s create our future.'
       }
+      let form = document.querySelector('#source-form')
+
       function onScanSuccess(decodedText, decodedResult) {
         console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
@@ -41,24 +43,6 @@
         }
       }
 
-      function onScanFailure(error) {
-      }
-
-      let html5QrcodeScanner = new Html5QrcodeScanner("reader", {
-        fps: 10,
-        qrbox: {
-          width: 500, height: 250
-        }
-      }, false);
-      html5QrcodeScanner.render(onScanSuccess, onScanFailure);
-    </script>
-    <script>
-      const form = document.querySelector('#source-form')
-      window.onload = function() {
-        if(localStorage.getItem('has_data')) {
-          form.setAttribute('style', 'display: none')
-        }
-      }
       function getEvents(key) {
         if(key == 1) {
           return { has_attended_1: false }
@@ -71,6 +55,15 @@
           }
         }
       }
+
+      let html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+        fps: 10,
+        qrbox: {
+          width: 500, height: 250
+        }
+      }, false);
+      html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+
       form.addEventListener('submit', evt => {
         evt.preventDefault()
         const csv = evt.currentTarget.querySelector('#source-file').files[0]
@@ -87,6 +80,12 @@
         })
         reader.readAsText(csv);
       })
+
+      window.onload = function() {
+        if(localStorage.getItem('has_data')) {
+          form.setAttribute('style', 'display: none')
+        }
+      }
     </script>
   </body>
 </html>
