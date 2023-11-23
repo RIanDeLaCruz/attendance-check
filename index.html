@@ -53,6 +53,12 @@
       html5QrcodeScanner.render(onScanSuccess, onScanFailure);
     </script>
     <script>
+      const form = document.querySelector('#source-form')
+      window.onload = function() {
+        if(localStorage.getItem('has_data')) {
+          form.setAttribute('style', 'display: none')
+        }
+      }
       function getEvents(key) {
         if(key == 1) {
           return { has_attended_1: false }
@@ -65,18 +71,19 @@
           }
         }
       }
-      const form = document.querySelector('#source-form')
       form.addEventListener('submit', evt => {
         evt.preventDefault()
         const csv = evt.currentTarget.querySelector('#source-file').files[0]
         const reader = new FileReader()
         reader.addEventListener('load', readEvent => {
+          localStorage.setItem('has_data', 'true')
           const result = readEvent.target.result
           for(let row of result.split('\n')) {
             const key = row.split(',')[0]
             const values = getEvents(row.split(',')[1])
             localStorage.setItem(key, JSON.stringify(values))
           }
+          alert('Data has been loaded')
         })
         reader.readAsText(csv);
       })
