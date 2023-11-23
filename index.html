@@ -24,6 +24,7 @@
         2: 'Let’s create our future.'
       }
       function onScanSuccess(decodedText, decodedResult) {
+        console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
         const currentSession = document.querySelector('[name="currentSession"]:checked').value
         if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
