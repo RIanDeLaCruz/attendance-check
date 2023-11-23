@@ -6,27 +6,76 @@
     <title>Index</title>
   </head>
   <body>
+    <label for="session1">Session 1 Attendance</label>
+    <input type="radio" name="currentSession" id="session1" value="1">
+    <label for="session2">Session 2 Attendance</label>
+    <input type="radio" name="currentSession" id="session2" value="2">
+
+    <form action="/" method="POST" id="source-form">
+      <label for="source-file">Source File</label>
+      <input type="file" id="source-file">
+      <input type="submit" name="load" id="load" value="Load Source File">
+    </form>
     <div id="reader" width="60vw"></div>
-    <textarea name="console" id="console"></textarea>
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
+      const sessionSet = {
+        1: 'Why A.I. ethics? Why now?',
+        2: 'Let’s create our future.'
+      }
       function onScanSuccess(decodedText, decodedResult) {
-        // handle the scanned code as you like, for example:
-        console.log(`Code matched = ${decodedText}`, decodedResult);
-        document.querySelector('#console').value += `${decodedText}, ${decodedResult}`
+        let item = JSON.parse(localStorage.getItem(decodedText))
+        const currentSession = document.querySelector('[name="currentSession"]:checked').value
+        if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
+          item[`has_attended_${currentSession}`] = true
+          if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
+            localStorage.setItem(decodedText, item)
+          }
+        } else {
+          alert('You are not in the registration list')
+        }
       }
 
       function onScanFailure(error) {
-        // handle scan failure, usually better to ignore and keep scanning.
-        // for example:
         console.warn(`Code scan error = ${error}`);
       }
 
-      let html5QrcodeScanner = new Html5QrcodeScanner(
-        "reader",
-        { fps: 10, qrbox: {width: 500, height: 250} },
-        /* verbose= */ false);
+      let html5QrcodeScanner = new Html5QrcodeScanner("reader", {
+        fps: 10,
+        qrbox: {
+          width: 500, height: 250
+        }
+      }, false);
       html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+    </script>
+    <script>
+      function getEvents(key) {
+        if(key == 1) {
+          return { has_attended_1: false }
+        } else if(key == 2) {
+          return { has_attended_2: false }
+        } else {
+          return {
+            has_attended_1: false,
+            has_attended_2: false
+          }
+        }
+      }
+      const form = document.querySelector('#source-form')
+      form.addEventListener('submit', evt => {
+        evt.preventDefault()
+        const csv = evt.currentTarget.querySelector('#source-file').files[0]
+        const reader = new FileReader()
+        reader.addEventListener('load', readEvent => {
+          const result = readEvent.target.result
+          for(let row of result.split('\n')) {
+            const key = row.split(',')[0]
+            const values = getEvents(row.split(',')[1])
+            localStorage.setItem(key, JSON.stringify(values))
+          }
+        })
+        reader.readAsText(csv);
+      })
     </script>
   </body>
 </html>
