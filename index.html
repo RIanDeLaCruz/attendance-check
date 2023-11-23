@@ -169,6 +169,7 @@
             localStorage.setItem(key, JSON.stringify(values))
           }
           alert('Data has been loaded')
+          form.setAttribute('style', 'display: none')
         })
         reader.readAsText(csv);
       })
