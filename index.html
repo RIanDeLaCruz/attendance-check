@@ -31,7 +31,7 @@
           if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
             item[`has_attended_${currentSession}`] = true
             if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
-              localStorage.setItem(decodedText, item)
+              localStorage.setItem(decodedText, JSON.stringify(item))
             }
           } else {
             alert('You are not in the registration list')
