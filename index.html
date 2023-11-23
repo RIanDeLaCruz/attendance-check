@@ -26,11 +26,15 @@
       function onScanSuccess(decodedText, decodedResult) {
         console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
-        const currentSession = document.querySelector('[name="currentSession"]:checked').value
-        if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
-          item[`has_attended_${currentSession}`] = true
-          if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
-            localStorage.setItem(decodedText, item)
+        if (item) {
+          const currentSession = document.querySelector('[name="currentSession"]:checked').value
+          if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
+            item[`has_attended_${currentSession}`] = true
+            if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
+              localStorage.setItem(decodedText, item)
+            }
+          } else {
+            alert('You are not in the registration list')
           }
         } else {
           alert('You are not in the registration list')
@@ -38,7 +42,6 @@
       }
 
       function onScanFailure(error) {
-        console.warn(`Code scan error = ${error}`);
       }
 
       let html5QrcodeScanner = new Html5QrcodeScanner("reader", {
