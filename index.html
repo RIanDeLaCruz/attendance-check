@@ -135,6 +135,7 @@
         if (item) {
           item[`has_attended_${currentSession}`] = true
           localStorage.setItem(decodedText, JSON.stringify(item))
+          alert(`Saved ${decodedText} attendance`)
         //  if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
         //    item[`has_attended_${currentSession}`] = true
         //    if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
@@ -149,7 +150,7 @@
           let item = {}
           item[`has_attended_${currentSession}`] = true
           localStorage.setItem(decodedText, JSON.stringify(item))
-          alert('Saved')
+          alert(`Saved ${decodedText} attendance`)
         }
       }
 
