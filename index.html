@@ -130,9 +130,6 @@
       let form = document.querySelector('#source-form')
 
       function onScanSuccess(decodedText, decodedResult) {
-        alert('success')
-        alert(decodedText)
-        console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
         const currentSession = document.querySelector('[name="currentSession"]:checked').value
         if (item) {
@@ -149,6 +146,7 @@
         //} else {
         //  alert('You are not in the registration list')
         } else {
+          let item = {}
           item[`has_attended_${currentSession}`] = true
           localStorage.setItem(decodedText, JSON.stringify(item))
           alert('Saved')
