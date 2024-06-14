@@ -130,6 +130,8 @@
       let form = document.querySelector('#source-form')
 
       function onScanSuccess(decodedText, decodedResult) {
+        alert('success')
+        alert(decodedText)
         console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
         const currentSession = document.querySelector('[name="currentSession"]:checked').value
