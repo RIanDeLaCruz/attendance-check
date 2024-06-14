@@ -89,11 +89,23 @@
     <div class="top-container">
       <label>
         <input type="radio" name="currentSession" id="session1" value="1">
-        <span>Session 1 Attendance</span>
+        <span>Day 1, Jun 19</span>
       </label>
       <label>
         <input type="radio" name="currentSession" id="session2" value="2">
-        <span>Session 2 Attendance</span>
+        <span>Welcome Reception, Jun 19</span>
+      </label>
+      <label>
+        <input type="radio" name="currentSession" id="session3" value="3">
+        <span>Day 2, Jun 20</span>
+      </label>
+      <label>
+        <input type="radio" name="currentSession" id="session4" value="4">
+        <span>Conference Banquet, Jun 20</span>
+      </label>
+      <label>
+        <input type="radio" name="currentSession" id="session5" value="5">
+        <span>Day 3, Jun 21</span>
       </label>
 
       <form action="/" method="POST" id="source-form">
@@ -109,8 +121,11 @@
     <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
     <script>
       const sessionSet = {
-        1: 'Why A.I. ethics? Why now?',
-        2: 'Let’s create our future.'
+        1: 'Day 1, Jun 19',
+        2: 'Welcome Reception, Jun 19',
+        3: 'Day 2, Jun 20',
+        4: 'Conference Banquet, Jun 20',
+        5: 'Day 3, Jun 21'
       }
       let form = document.querySelector('#source-form')
 
@@ -119,16 +134,18 @@
         let item = JSON.parse(localStorage.getItem(decodedText))
         if (item) {
           const currentSession = document.querySelector('[name="currentSession"]:checked').value
-          if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
-            item[`has_attended_${currentSession}`] = true
-            if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
-              localStorage.setItem(decodedText, JSON.stringify(item))
-            }
-          } else {
-            alert('You are not in the registration list')
-          }
-        } else {
-          alert('You are not in the registration list')
+          item[`has_attended_${currentSession}`] = true
+          localStorage.setItem(decodedText, JSON.stringify(item))
+        //  if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
+        //    item[`has_attended_${currentSession}`] = true
+        //    if(confirm(`Confirm attendance of ${decodedText} to ${sessionSet[currentSession]}`)) {
+        //      localStorage.setItem(decodedText, JSON.stringify(item))
+        //    }
+        //  } else {
+        //    alert('You are not in the registration list')
+        //  }
+        //} else {
+        //  alert('You are not in the registration list')
         }
       }
 
