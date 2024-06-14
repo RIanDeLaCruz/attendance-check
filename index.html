@@ -132,8 +132,8 @@
       function onScanSuccess(decodedText, decodedResult) {
         console.log('YES')
         let item = JSON.parse(localStorage.getItem(decodedText))
+        const currentSession = document.querySelector('[name="currentSession"]:checked').value
         if (item) {
-          const currentSession = document.querySelector('[name="currentSession"]:checked').value
           item[`has_attended_${currentSession}`] = true
           localStorage.setItem(decodedText, JSON.stringify(item))
         //  if (currentSession && item.hasOwnProperty(`has_attended_${currentSession}`)) {
@@ -146,6 +146,10 @@
         //  }
         //} else {
         //  alert('You are not in the registration list')
+        } else {
+          item[`has_attended_${currentSession}`] = true
+          localStorage.setItem(decodedText, JSON.stringify(item))
+          alert('Saved')
         }
       }
 
