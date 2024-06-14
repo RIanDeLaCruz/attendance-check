@@ -213,16 +213,23 @@
         for(let key of keys) {
           returnCSV += `${key}`
           let value = JSON.parse(localStorage.getItem(key))
-          if(value.hasOwnProperty('has_attended_1')) {
-            returnCSV += `,${value['has_attended_1']}`
-          } else {
-            returnCSV += ',NA'
+          for(let key of Object.keys(sessionSet)) {
+            if(value.hasOwnProperty(`has_attended_${key}`)) {
+              returnCSV += `,${value[`has_attended_${key}`]}`
+            } else {
+              returnCSV += (key == 5) ? ',NA\n' :',NA'
+            }
           }
-          if(value.hasOwnProperty('has_attended_2')) {
-            returnCSV += `,${value['has_attended_2']}\n`
-          } else {
-            returnCSV += ',NA\n'
-          }
+          //if(value.hasOwnProperty('has_attended_1')) {
+          //  returnCSV += `,${value['has_attended_1']}`
+          //} else {
+          //  returnCSV += ',NA'
+          //}
+          //if(value.hasOwnProperty('has_attended_2')) {
+          //  returnCSV += `,${value['has_attended_2']}\n`
+          //} else {
+          //  returnCSV += ',NA\n'
+          //}
         }
         generateCSV(returnCSV)
       })
