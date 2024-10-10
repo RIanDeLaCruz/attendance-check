@@ -220,7 +220,7 @@
           let value = JSON.parse(localStorage.getItem(key))
           for(let key of Object.keys(sessionSet)) {
             if(value.hasOwnProperty(`has_attended_${key}`)) {
-              returnCSV += `,${value[`has_attended_${key}`]}`
+              returnCSV += (key == 5) ? `,${value[`has_attended_${key}`]}\n` : `,${value[`has_attended_${key}`]}`
             } else {
               returnCSV += (key == 5) ? ',NA\n' :',NA'
             }
