@@ -87,32 +87,32 @@
   </head>
   <body>
     <div class="top-container">
-      <label>
-        <input type="radio" name="currentSession" id="session1" value="1">
-        <span>Day 1, Jun 19</span>
-      </label>
-      <label>
-        <input type="radio" name="currentSession" id="session2" value="2">
-        <span>Welcome Reception, Jun 19</span>
-      </label>
-      <label>
-        <input type="radio" name="currentSession" id="session3" value="3">
-        <span>Day 2, Jun 20</span>
-      </label>
-      <label>
-        <input type="radio" name="currentSession" id="session4" value="4">
-        <span>Conference Banquet, Jun 20</span>
-      </label>
-      <label>
-        <input type="radio" name="currentSession" id="session5" value="5">
-        <span>Day 3, Jun 21</span>
-      </label>
+      <!--<label>-->
+        <!--<input type="radio" name="currentSession" id="session1" value="1">-->
+        <!--<span>Day 1, Jun 19</span>-->
+      <!--</label>-->
+      <!--<label>-->
+        <!--<input type="radio" name="currentSession" id="session2" value="2">-->
+        <!--<span>Welcome Reception, Jun 19</span>-->
+      <!--</label>-->
+      <!--<label>-->
+        <!--<input type="radio" name="currentSession" id="session3" value="3">-->
+        <!--<span>Day 2, Jun 20</span>-->
+      <!--</label>-->
+      <!--<label>-->
+        <!--<input type="radio" name="currentSession" id="session4" value="4">-->
+        <!--<span>Conference Banquet, Jun 20</span>-->
+      <!--</label>-->
+      <!--<label>-->
+        <!--<input type="radio" name="currentSession" id="session5" value="5">-->
+        <!--<span>Day 3, Jun 21</span>-->
+      <!--</label>-->
 
-      <form action="/" method="POST" id="source-form">
-        <label>Source File</label>
-        <input type="file" id="source-file">
-        <input type="submit" name="load" id="load" value="Load Source File">
-      </form>
+      <!--<form action="/" method="POST" id="source-form">-->
+        <!--<label>Source File</label>-->
+        <!--<input type="file" id="source-file">-->
+        <!--<input type="submit" name="load" id="load" value="Load Source File">-->
+      <!--</form>-->
     </div>
     <div id="reader"></div>
     <div class="bottom-container">
@@ -129,6 +129,7 @@
       }
       let form = document.querySelector('#source-form')
 
+      /*
       function onScanSuccess(decodedText, decodedResult) {
         let item = JSON.parse(localStorage.getItem(decodedText))
         const currentSession = document.querySelector('[name="currentSession"]:checked').value
@@ -152,6 +153,16 @@
           localStorage.setItem(decodedText, JSON.stringify(item))
           alert(`Saved ${decodedText} attendance`)
         }
+      }
+      */
+
+      function onScanSuccess(decodedText, decodedResult) {
+        let [ name, count ] = decodedText.split(',')
+        let time = new Date().toLocaleString()
+        alert(`${name} registered for ${count} at ${time}`)
+        let attendees = JSON.parse(localStorage.getItem('attendees'))
+        attendees.push({name, time: time})
+        localStorage.setItem('attendees', JSON.stringify(attendees))
       }
 
       function onScanFailure(error) {
@@ -211,10 +222,20 @@
 
         link.click();
       }
+
+      function exportHomecomingData(csv) {
+        let attendees = JSON.parse(localStorage.getItem('attendees'))
+        attendees.forEach(el => {
+          csv+=`${el.name},${el.time}\n`
+        })
+      }
+
       let exportBtn = document.querySelector('button#export')
       exportBtn.addEventListener('click', evt => {
-        const keys = [...Object.keys(localStorage)]
         let returnCSV = "data:text/csv;charset=utf-8,"
+        exportHomecomingData(csv)
+        /*
+        const keys = [...Object.keys(localStorage)]
         for(let key of keys) {
           returnCSV += `${key}`
           let value = JSON.parse(localStorage.getItem(key))
@@ -236,6 +257,7 @@
           //  returnCSV += ',NA\n'
           //}
         }
+        */
         generateCSV(returnCSV)
       })
     </script>
