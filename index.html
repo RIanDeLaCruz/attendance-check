@@ -206,7 +206,7 @@
 
             //localStorage.setItem(key, JSON.stringify(values))
           }
-          console.log(attendees)
+          alert(JSON.stringify(attendees))
           localStorage.setItem('attendees', JSON.stringify(attendees))
           alert('Data has been loaded')
           form.setAttribute('style', 'display: none')
@@ -232,7 +232,7 @@
 
       function exportHomecomingData(csv) {
         let attendees = JSON.parse(localStorage.getItem('attendees'))
-        alert(attendees)
+        alert(JSON.stringify( attendees ))
         for(let code in attendees) {
           let attendee = attendees[code]
           csv += `${attendee.name},${attendee.time}\n`
