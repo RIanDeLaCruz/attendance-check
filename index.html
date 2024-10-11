@@ -241,7 +241,7 @@
       exportBtn.addEventListener('click', evt => {
         let returnCSV = "data:text/csv;charset=utf-8,"
         try {
-          exportHomecomingData(csv)
+          exportHomecomingData(returnCSV)
         } catch(err) {
           alert(err)
         }
