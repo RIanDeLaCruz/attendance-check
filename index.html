@@ -108,11 +108,11 @@
         <!--<span>Day 3, Jun 21</span>-->
       <!--</label>-->
 
-      <!--<form action="/" method="POST" id="source-form">-->
-        <!--<label>Source File</label>-->
-        <!--<input type="file" id="source-file">-->
-        <!--<input type="submit" name="load" id="load" value="Load Source File">-->
-      <!--</form>-->
+      <form action="/" method="POST" id="source-form">
+        <label>Source File</label>
+        <input type="file" id="source-file">
+        <input type="submit" name="load" id="load" value="Load Source File">
+      </form>
     </div>
     <div id="reader"></div>
     <div class="bottom-container">
@@ -157,12 +157,11 @@
       */
 
       function onScanSuccess(decodedText, decodedResult) {
-        let [ name, count ] = decodedText.split(',')
-        let time = new Date().toLocaleString()
-        alert(`${name} registered for ${count} at ${time}`)
-        let attendees = JSON.parse(localStorage.getItem('attendees'))
-        attendees.push({name, time: time})
-        localStorage.setItem('attendees', JSON.stringify(attendees))
+        let attendee = JSON.parse((localStorage.getItem(decodedText)))
+        attendee.time = new Date().toLocaleString()
+        localStorage.setItem(attendee.code, JSON.stringify(attendee))
+
+        alert(`${attendee.name} registered for ${attendee.count}`)
       }
 
       function onScanFailure(error) {
@@ -196,10 +195,14 @@
         reader.addEventListener('load', readEvent => {
           localStorage.setItem('has_data', 'true')
           const result = readEvent.target.result
+
           for(let row of result.split('\n')) {
-            const key = row.split(',')[0]
-            const values = getEvents(row.split(',')[1])
-            localStorage.setItem(key, JSON.stringify(values))
+            //const key = row.split(',')[0]
+            //const values = getEvents(row.split(',')[1])
+            const [ code, name, count ] = row.split(',')
+
+            //localStorage.setItem(key, JSON.stringify(values))
+            localStorage.setItem(code, JSON.stringify({ name, count }))
           }
           alert('Data has been loaded')
           form.setAttribute('style', 'display: none')
