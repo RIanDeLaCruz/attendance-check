@@ -231,6 +231,7 @@
 
       function exportHomecomingData(csv) {
         let attendees = JSON.parse(localStorage.getItem('attendees'))
+        alert(attendees)
         for(let code in attendees) {
           let attendee = attendees[code]
           csv += `${attendee.name},${attendee.time}\n`
