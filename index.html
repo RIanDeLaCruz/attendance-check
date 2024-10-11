@@ -160,6 +160,7 @@
         let attendees = JSON.parse(localStorage.getItem('attendees'))
         let attendee = attendees[decodedText]
         attendee.time = new Date().toLocaleString()
+        attendee.time = attendee.time.replace(",", "")
         localStorage.setItem('attendees', JSON.stringify(attendees))
 
         alert(`${attendee.name} registered for ${attendee.count}`)
@@ -202,11 +203,12 @@
             //const key = row.split(',')[0]
             //const values = getEvents(row.split(',')[1])
             const [ code, name, count ] = row.split(',')
-            attendees[code] = { name, count }
+            if(code != "") {
+              attendees[code] = { name, count, time: '' }
+            }
 
             //localStorage.setItem(key, JSON.stringify(values))
           }
-          alert(JSON.stringify(attendees))
           localStorage.setItem('attendees', JSON.stringify(attendees))
           alert('Data has been loaded')
           form.setAttribute('style', 'display: none')
@@ -232,7 +234,6 @@
 
       function exportHomecomingData(csv) {
         let attendees = JSON.parse(localStorage.getItem('attendees'))
-        alert(JSON.stringify( attendees ))
         for(let code in attendees) {
           let attendee = attendees[code]
           csv += `${attendee.name},${attendee.time}\n`
@@ -245,7 +246,6 @@
         let returnCSV = "data:text/csv;charset=utf-8,"
         try {
           returnCSV += exportHomecomingData(returnCSV)
-          alert(returnCSV)
           generateCSV(returnCSV)
         } catch(err) {
           alert(err)
