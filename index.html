@@ -157,9 +157,10 @@
       */
 
       function onScanSuccess(decodedText, decodedResult) {
-        let attendee = JSON.parse((localStorage.getItem(decodedText)))
+        let attendees = JSON.parse(localStorage.getItem('attendees'))
+        let attendee = attendees[decodedText]
         attendee.time = new Date().toLocaleString()
-        localStorage.setItem(attendee.code, JSON.stringify(attendee))
+        localStorage.setItem('attendees', JSON.stringify(attendees))
 
         alert(`${attendee.name} registered for ${attendee.count}`)
       }
@@ -195,15 +196,17 @@
         reader.addEventListener('load', readEvent => {
           localStorage.setItem('has_data', 'true')
           const result = readEvent.target.result
+          const attendees = {}
 
           for(let row of result.split('\n')) {
             //const key = row.split(',')[0]
             //const values = getEvents(row.split(',')[1])
             const [ code, name, count ] = row.split(',')
+            attendees[code] = { name, count }
 
             //localStorage.setItem(key, JSON.stringify(values))
-            localStorage.setItem(code, JSON.stringify({ name, count }))
           }
+          localStorage.setItem('attendees', JSON.stringify(attendees))
           alert('Data has been loaded')
           form.setAttribute('style', 'display: none')
         })
@@ -228,15 +231,20 @@
 
       function exportHomecomingData(csv) {
         let attendees = JSON.parse(localStorage.getItem('attendees'))
-        attendees.forEach(el => {
-          csv+=`${el.name},${el.time}\n`
-        })
+        for(let code in attendees) {
+          let attendee = attendees[code]
+          csv += `${attendee.name},${attendee.time}\n`
+        }
       }
 
       let exportBtn = document.querySelector('button#export')
       exportBtn.addEventListener('click', evt => {
         let returnCSV = "data:text/csv;charset=utf-8,"
-        exportHomecomingData(csv)
+        try {
+          exportHomecomingData(csv)
+        } catch(err) {
+          alert(err)
+        }
         /*
         const keys = [...Object.keys(localStorage)]
         for(let key of keys) {
