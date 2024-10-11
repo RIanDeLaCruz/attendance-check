@@ -237,13 +237,14 @@
           let attendee = attendees[code]
           csv += `${attendee.name},${attendee.time}\n`
         }
+        return csv
       }
 
       let exportBtn = document.querySelector('button#export')
       exportBtn.addEventListener('click', evt => {
         let returnCSV = "data:text/csv;charset=utf-8,"
         try {
-          exportHomecomingData(returnCSV)
+          returnCSV += exportHomecomingData(returnCSV)
           alert(returnCSV)
           generateCSV(returnCSV)
         } catch(err) {
