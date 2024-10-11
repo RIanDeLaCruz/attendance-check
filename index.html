@@ -242,6 +242,7 @@
         let returnCSV = "data:text/csv;charset=utf-8,"
         try {
           exportHomecomingData(returnCSV)
+          generateCSV(returnCSV)
         } catch(err) {
           alert(err)
         }
@@ -269,7 +270,6 @@
           //}
         }
         */
-        generateCSV(returnCSV)
       })
     </script>
   </body>
