@@ -244,6 +244,7 @@
         let returnCSV = "data:text/csv;charset=utf-8,"
         try {
           exportHomecomingData(returnCSV)
+          alert(returnCSV)
           generateCSV(returnCSV)
         } catch(err) {
           alert(err)
