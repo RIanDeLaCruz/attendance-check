@@ -236,7 +236,7 @@
         let attendees = JSON.parse(localStorage.getItem('attendees'))
         for(let code in attendees) {
           let attendee = attendees[code]
-          csv += `${attendee.name},${attendee.time}\n`
+          csv += `${code},${attendee.name},${attendee.time}\n`
         }
         return csv
       }
