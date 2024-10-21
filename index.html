@@ -159,11 +159,15 @@
       function onScanSuccess(decodedText, decodedResult) {
         let attendees = JSON.parse(localStorage.getItem('attendees'))
         let attendee = attendees[decodedText]
-        attendee.time = new Date().toLocaleString()
-        attendee.time = attendee.time.replace(",", "")
-        localStorage.setItem('attendees', JSON.stringify(attendees))
+        if(attendee) {
+          attendee.time = new Date().toLocaleString()
+          attendee.time = attendee.time.replace(",", "")
+          localStorage.setItem('attendees', JSON.stringify(attendees))
 
-        alert(`${attendee.name} registered for session`)
+          alert(`${attendee.name} registered for session`)
+        } else {
+          alert(`Not Registered`)
+        }
       }
 
       function onScanFailure(error) {
