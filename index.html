@@ -163,7 +163,7 @@
         attendee.time = attendee.time.replace(",", "")
         localStorage.setItem('attendees', JSON.stringify(attendees))
 
-        alert(`${attendee.name} registered for ${attendee.count}`)
+        alert(`${attendee.name} registered for session`)
       }
 
       function onScanFailure(error) {
